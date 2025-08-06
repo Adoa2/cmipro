@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMIPRO - Noticias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --secondary: #0EA5E9;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark: #0F172A;
+            --gray-900: #111827;
+            --gray-700: #374151;
+            --gray-500: #6B7280;
+            --gray-300: #D1D5DB;
+            --gray-100: #F3F4F6;
+            --white: #FFFFFF;
+            
+            --category-weather: #3B82F6;
+            --category-seismic: #F59E0B;
+            --category-alert: #EF4444;
+            --category-analysis: #8B5CF6;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--gray-100);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--gray-300);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-item {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+        }
+        
+        .ai-indicator {
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        /* News Filters */
+        .news-filters {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.625rem 1.25rem;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            color: var(--gray-700);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            background: var(--gray-200);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .filter-count {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+        
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        /* Featured Article */
+        .featured-article {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .featured-tag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .featured-content {
+            padding: 2rem;
+        }
+        
+        .featured-title {
+            font-size: 1.75rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .featured-excerpt {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-meta {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+        
+        /* Article Card */
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .article-image {
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--gray-400);
+        }
+        
+        .article-content {
+            padding: 1.5rem;
+        }
+        
+        .article-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .category-weather {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--category-weather);
+        }
+        
+        .category-seismic {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--category-seismic);
+        }
+        
+        .category-alert {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--category-alert);
+        }
+        
+        .category-analysis {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--category-analysis);
+        }
+        
+        .article-title {
+            font-size: 1.125rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .article-excerpt {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .article-time {
+            color: var(--gray-500);
+            font-size: 0.75rem;
+        }
+        
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        /* AI Summary Widget */
+        .ai-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .widget-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .widget-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .widget-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .summary-content {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-points {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .summary-point {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+        
+        .point-icon {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        
+        .point-text {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            line-height: 1.4;
+        }
+        
+        /* Trending Topics */
+        .trending-topics {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-list {
+            margin-top: 1rem;
+        }
+        
+        .topic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+        
+        .topic-name {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+        }
+        
+        .topic-count {
+            background: var(--gray-100);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+        
+        /* Live Updates */
+        .live-updates {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .update-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .update-time {
+            color: var(--gray-500);
+            font-size: 0.75rem;
+            min-width: 50px;
+        }
+        
+        .update-text {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            line-height: 1.4;
+        }
+        
+        .update-text strong {
+            color: var(--dark);
+        }
+        
+        /* Load More */
+        .load-more {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .load-more-btn {
+            padding: 0.875rem 2rem;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            color: var(--gray-700);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .load-more-btn:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            
+            .article-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-image {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                🌊 CMIPRO
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-item">Dashboard</a></li>
+                    <li><a href="#" class="nav-item">Alertas</a></li>
+                    <li><a href="#" class="nav-item active">Noticias</a></li>
+                    <li><a href="#" class="nav-item">Mapa</a></li>
+                    <li><a href="#" class="nav-item">Análisis</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">📰 Centro de Noticias</h1>
+            <p class="hero-subtitle">
+                Información meteorológica y sísmica actualizada para el Valle de Sula
+            </p>
+            <div class="ai-badge">
+                <span class="ai-indicator"></span>
+                <span>Resúmenes generados por IA • Actualización cada 30 min</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- News Section -->
+        <main>
+            <!-- Filters -->
+            <div class="news-filters">
+                <div class="filter-tabs">
+                    <button class="filter-btn active">
+                        <span>🔥</span>
+                        <span>Todo</span>
+                        <span class="filter-count">24</span>
+                    </button>
+                    <button class="filter-btn">
+                        <span>☁️</span>
+                        <span>Meteorología</span>
+                        <span class="filter-count">12</span>
+                    </button>
+                    <button class="filter-btn">
+                        <span>🌍</span>
+                        <span>Sismología</span>
+                        <span class="filter-count">5</span>
+                    </button>
+                    <button class="filter-btn">
+                        <span>⚠️</span>
+                        <span>Alertas</span>
+                        <span class="filter-count">3</span>
+                    </button>
+                    <button class="filter-btn">
+                        <span>📊</span>
+                        <span>Análisis</span>
+                        <span class="filter-count">4</span>
+                    </button>
+                </div>
+                <select style="padding: 0.625rem 1rem; border: 1px solid var(--gray-300); border-radius: 8px;">
+                    <option>Más reciente</option>
+                    <option>Más relevante</option>
+                    <option>Mayor riesgo</option>
+                </select>
+            </div>
+            
+            <!-- Featured Article -->
+            <article class="featured-article">
+                <div class="featured-image">
+                    <span class="featured-tag">🔴 URGENTE</span>
+                    🌊
+                </div>
+                <div class="featured-content">
+                    <h2 class="featured-title">
+                        Sistema de Baja Presión se Fortalece en el Caribe: 
+                        Posible Impacto en Honduras en 72 Horas
+                    </h2>
+                    <p class="featured-excerpt">
+                        Un sistema de baja presión ubicado a 450 km al este de la costa hondureña 
+                        muestra signos de fortalecimiento según los últimos modelos meteorológicos. 
+                        El Centro Nacional de Huracanes indica una probabilidad del 70% de desarrollo 
+                        ciclónico en las próximas 48 horas. Se esperan lluvias intensas en la región 
+                        norte del país, con acumulados que podrían superar los 200mm...
+                    </p>
+                    <div class="featured-meta">
+                        <div class="meta-item">
+                            <span>🤖</span>
+                            <span>Resumen IA</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📍</span>
+                            <span>Caribe hondureño</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>⏰</span>
+                            <span>Hace 15 minutos</span>
+                        </div>
+                        <div class="meta-item">
+                            <span>📊</span>
+                            <span>5 fuentes analizadas</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- News Grid -->
+            <div class="news-grid">
+                <!-- Article 1 -->
+                <article class="article-card">
+                    <div class="article-image">☔</div>
+                    <div class="article-content">
+                        <span class="article-category category-weather">Meteorología</span>
+                        <h3 class="article-title">
+                            Frente Frío #12 Ingresará al País este Fin de Semana
+                        </h3>
+                        <p class="article-excerpt">
+                            Las temperaturas descenderán hasta 18°C en zonas altas. 
+                            Se esperan vientos de hasta 45 km/h y lluvias moderadas...
+                        </p>
+                        <div class="article-footer">
+                            <span class="article-time">Hace 45 minutos</span>
+                            <a href="#" class="read-more">Leer más →</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Article 2 -->
+                <article class="article-card">
+                    <div class="article-image">🌍</div>
+                    <div class="article-content">
+                        <span class="article-category category-seismic">Sismología</span>
+                        <h3 class="article-title">
+                            Sismo de 4.2 Grados Registrado en el Golfo de Fonseca
+                        </h3>
+                        <p class="article-excerpt">
+                            Sin daños reportados. El epicentro se ubicó a 35 km de profundidad. 
+                            Es el tercer sismo en la zona esta semana...
+                        </p>
+                        <div class="article-footer">
+                            <span class="article-time">Hace 2 horas</span>
+                            <a href="#" class="read-more">Leer más →</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Article 3 -->
+                <article class="article-card">
+                    <div class="article-image">📊</div>
+                    <div class="article-content">
+                        <span class="article-category category-analysis">Análisis IA</span>
+                        <h3 class="article-title">
+                            Predicción: Niveles del Río Ulúa se Mantendrán Estables
+                        </h3>
+                        <p class="article-excerpt">
+                            Los modelos predictivos indican estabilidad en los próximos 5 días. 
+                            Probabilidad de crecida menor al 15% según análisis histórico...
+                        </p>
+                        <div class="article-footer">
+                            <span class="article-time">Hace 3 horas</span>
+                            <a href="#" class="read-more">Leer más →</a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Article 4 -->
+                <article class="article-card">
+                    <div class="article-image">⚠️</div>
+                    <div class="article-content">
+                        <span class="article-category category-alert">Alerta</span>
+                        <h3 class="article-title">
+                            COPECO Activa Alerta Verde para 5 Departamentos
+                        </h3>
+                        <p class="article-excerpt">
+                            Cortés, Atlántida, Yoro, Colón y Gracias a Dios en vigilancia. 
+                            Se recomienda precaución en zonas vulnerables...
+                        </p>
+                        <div class="article-footer">
+                            <span class="article-time">Hace 4 horas</span>
+                            <a href="#" class="read-more">Leer más →</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <!-- Load More -->
+            <div class="load-more">
+                <button class="load-more-btn">Cargar más noticias</button>
+            </div>
+        </main>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- AI Summary Widget -->
+            <div class="ai-summary">
+                <div class="widget-header">
+                    <div class="widget-icon">🤖</div>
+                    <h3 class="widget-title">Resumen del Día</h3>
+                </div>
+                <p class="summary-content">
+                    Análisis automático de las últimas 24 horas basado en 47 fuentes:
+                </p>
+                <ul class="summary-points">
+                    <li class="summary-point">
+                        <span class="point-icon">☔</span>
+                        <span class="point-text">
+                            <strong>Precipitación:</strong> Acumulados de 45mm en zona norte. 
+                            Tendencia ascendente para próximas 48h.
+                        </span>
+                    </li>
+                    <li class="summary-point">
+                        <span class="point-icon">🌊</span>
+                        <span class="point-text">
+                            <strong>Ríos:</strong> Niveles estables. Ulúa en 4.2m, 
+                            Chamelecón en 3.8m. Sin riesgo inmediato.
+                        </span>
+                    </li>
+                    <li class="summary-point">
+                        <span class="point-icon">🌍</span>
+                        <span class="point-text">
+                            <strong>Actividad sísmica:</strong> 3 eventos menores. 
+                            Mayor magnitud: 4.2 en Golfo de Fonseca.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Trending Topics -->
+            <div class="trending-topics">
+                <div class="widget-header">
+                    <div class="widget-icon">📈</div>
+                    <h3 class="widget-title">Temas Populares</h3>
+                </div>
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <span class="topic-name">#FrenteFrio12</span>
+                        <span class="topic-count">18</span>
+                    </div>
+                    <div class="topic-item">
+                        <span class="topic-name">#RíoUlúa</span>
+                        <span class="topic-count">12</span>
+                    </div>
+                    <div class="topic-item">
+                        <span class="topic-name">#AlertaVerde</span>
+                        <span class="topic-count">9</span>
+                    </div>
+                    <div class="topic-item">
+                        <span class="topic-name">#SismoHonduras</span>
+                        <span class="topic-count">7</span>
+                    </div>
+                    <div class="topic-item">
+                        <span class="topic-name">#ValleDeSula</span>
+                        <span class="topic-count">6</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live Updates -->
+            <div class="live-updates">
+                <div class="widget-header">
+                    <div class="widget-icon">⚡</div>
+                    <h3 class="widget-title">Actualizaciones en Vivo</h3>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">14:32</span>
+                    <span class="update-text">
+                        <strong>Río Chamelecón:</strong> Nivel actual 3.9m (+0.1m)
+                    </span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">14:28</span>
+                    <span class="update-text">
+                        <strong>Precipitación:</strong> 12mm registrados en La Lima
+                    </span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">14:15</span>
+                    <span class="update-text">
+                        <strong>Alerta:</strong> Vientos fuertes en costa norte
+                    </span>
+                </div>
+                <div class="update-item">
+                    <span class="update-time">14:02</span>
+                    <span class="update-text">
+                        <strong>COPECO:</strong> Reunión de emergencia programada
+                    </span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Diseño - CMIPRO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Colores de Niveles de Riesgo */
+            --risk-normal: #22C55E;      /* Verde */
+            --risk-low: #86EFAC;         /* Verde claro */
+            --risk-moderate: #FDE047;    /* Amarillo */
+            --risk-high: #FB923C;        /* Naranja */
+            --risk-very-high: #DC2626;   /* Rojo oscuro */
+            --risk-critical: #FF0000;    /* Rojo brillante */
+            
+            /* Colores de UI */
+            --primary: #2563EB;          /* Azul principal */
+            --primary-dark: #1E40AF;
+            --secondary: #0EA5E9;         /* Azul cielo (agua) */
+            --dark: #0F172A;
+            --gray-900: #111827;
+            --gray-700: #374151;
+            --gray-500: #6B7280;
+            --gray-300: #D1D5DB;
+            --gray-100: #F3F4F6;
+            --white: #FFFFFF;
+            
+            /* Sombras */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            
+            /* Tipografía */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "Courier New", monospace;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--gray-500);
+            margin-bottom: 3rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+        
+        /* Grid de colores */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .color-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s;
+        }
+        
+        .color-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .color-preview {
+            height: 100px;
+            position: relative;
+        }
+        
+        .color-info {
+            padding: 1rem;
+            background: white;
+        }
+        
+        .color-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .color-value {
+            font-family: var(--font-mono);
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+        
+        /* Niveles de riesgo */
+        .risk-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        
+        .risk-level {
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .risk-level:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .risk-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .risk-range {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .risk-population {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        /* Componentes de UI */
+        .ui-components {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .btn-danger {
+            background: var(--risk-critical);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--risk-normal);
+            color: white;
+        }
+        
+        /* Cards */
+        .sample-card {
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Tipografía */
+        .typography-samples {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .typo-sample {
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            background: var(--gray-100);
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .bounce {
+            animation: bounce 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Sistema de Diseño CMIPRO</h1>
+        <p class="subtitle">Guía de estilo para la plataforma de monitoreo hidrológico del Valle de Sula</p>
+        
+        <!-- Niveles de Riesgo -->
+        <div class="section">
+            <h2 class="section-title">📊 Niveles de Riesgo Hidrológico</h2>
+            <div class="risk-levels">
+                <div class="risk-level" style="background: var(--risk-normal);">
+                    <div class="risk-icon">✓</div>
+                    <div>Normal</div>
+                    <div class="risk-range">0 - 2m</div>
+                    <div class="risk-population">0 personas en riesgo</div>
+                </div>
+                <div class="risk-level" style="background: var(--risk-low);">
+                    <div class="risk-icon">👁</div>
+                    <div>Bajo</div>
+                    <div class="risk-range">2 - 4m</div>
+                    <div class="risk-population">5,000 personas</div>
+                </div>
+                <div class="risk-level" style="background: var(--risk-moderate);">
+                    <div class="risk-icon">⚠</div>
+                    <div>Moderado</div>
+                    <div class="risk-range">4 - 6m</div>
+                    <div class="risk-population">25,000 personas</div>
+                </div>
+                <div class="risk-level" style="background: var(--risk-high);">
+                    <div class="risk-icon">⚠</div>
+                    <div>Alto</div>
+                    <div class="risk-range">6 - 8m</div>
+                    <div class="risk-population">100,000 personas</div>
+                </div>
+                <div class="risk-level" style="background: var(--risk-very-high);">
+                    <div class="risk-icon">🚨</div>
+                    <div>Muy Alto</div>
+                    <div class="risk-range">8 - 12m</div>
+                    <div class="risk-population">250,000 personas</div>
+                </div>
+                <div class="risk-level pulse" style="background: var(--risk-critical);">
+                    <div class="risk-icon bounce">🚨</div>
+                    <div>CRÍTICO</div>
+                    <div class="risk-range">> 12m</div>
+                    <div class="risk-population">400,000+ personas</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Paleta de Colores -->
+        <div class="section">
+            <h2 class="section-title">🎨 Paleta de Colores</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-preview" style="background: var(--primary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Primary</div>
+                        <div class="color-value">#2563EB</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview" style="background: var(--secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Secondary (Agua)</div>
+                        <div class="color-value">#0EA5E9</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview" style="background: var(--dark);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Dark</div>
+                        <div class="color-value">#0F172A</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-preview" style="background: var(--gray-500);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Gray 500</div>
+                        <div class="color-value">#6B7280</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Componentes UI -->
+        <div class="section">
+            <h2 class="section-title">🧩 Componentes UI</h2>
+            <div class="ui-components">
+                <!-- Botones -->
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Botones</h3>
+                    <div class="button-group">
+                        <button class="btn btn-primary">Primario</button>
+                        <button class="btn btn-secondary">Secundario</button>
+                        <button class="btn btn-success">Éxito</button>
+                        <button class="btn btn-danger">Peligro</button>
+                    </div>
+                </div>
+                
+                <!-- Card de ejemplo -->
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Tarjeta de Estación</h3>
+                    <div class="sample-card">
+                        <div class="card-header">
+                            <h4>🌊 Río Ulúa - Chinda (CHIH3)</h4>
+                            <span class="badge" style="background: var(--risk-moderate); color: var(--dark);">
+                                Nivel: 5.2m
+                            </span>
+                        </div>
+                        <p style="color: var(--gray-500);">Última actualización: hace 5 minutos</p>
+                        <p style="margin-top: 0.5rem;">Tendencia: ↗ Subiendo (0.3m/hora)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tipografía -->
+        <div class="section">
+            <h2 class="section-title">📝 Tipografía</h2>
+            <div class="typography-samples">
+                <div class="typo-sample">
+                    <h1>Heading 1 - Títulos principales (2.5rem)</h1>
+                </div>
+                <div class="typo-sample">
+                    <h2>Heading 2 - Secciones (1.5rem)</h2>
+                </div>
+                <div class="typo-sample">
+                    <p>Texto regular - Para contenido general (1rem)</p>
+                </div>
+                <div class="typo-sample">
+                    <small>Texto pequeño - Para información secundaria (0.875rem)</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

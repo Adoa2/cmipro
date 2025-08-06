@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMIPRO - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --secondary: #0EA5E9;
+            --danger: #DC2626;
+            --success: #22C55E;
+            --dark: #0F172A;
+            --gray-700: #374151;
+            --gray-500: #6B7280;
+            --gray-300: #D1D5DB;
+            --gray-100: #F3F4F6;
+            --white: #FFFFFF;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Panel izquierdo - Info */
+        .info-panel {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,197.3C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat;
+            background-size: cover;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            z-index: 1;
+        }
+        
+        .info-content {
+            z-index: 1;
+        }
+        
+        .info-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .features {
+            list-style: none;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        /* Panel derecho - Formulario */
+        .form-panel {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-subtitle {
+            color: var(--gray-500);
+        }
+        
+        .form-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--gray-300);
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-input.error {
+            border-color: var(--danger);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-checkbox input {
+            margin-right: 0.5rem;
+        }
+        
+        .form-checkbox label {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gray-300);
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: var(--gray-500);
+            position: relative;
+        }
+        
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            background: white;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-social:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+        
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Formulario de registro */
+        .register-form {
+            display: none;
+        }
+        
+        .form-content.register .register-form {
+            display: block;
+        }
+        
+        .form-content.register .login-form {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-panel {
+                display: none;
+            }
+        }
+        
+        /* Animaciones */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-content {
+            animation: slideIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Panel informativo izquierdo -->
+        <div class="info-panel">
+            <div class="logo">🌊 CMIPRO</div>
+            <div class="info-content">
+                <h1 class="info-title">Monitoreo de Ríos en Tiempo Real</h1>
+                <p class="info-text">
+                    Sistema de alerta temprana para el Valle de Sula. 
+                    Protege a tu familia con información precisa y oportuna 
+                    sobre los niveles de los ríos Ulúa y Chamelecón.
+                </p>
+                <ul class="features">
+                    <li class="feature">
+                        <span class="feature-icon">✓</span>
+                        <span>Datos actualizados cada 5 minutos</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✓</span>
+                        <span>Sistema de 6 niveles de alerta</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✓</span>
+                        <span>Notificaciones en tiempo real</span>
+                    </li>
+                    <li class="feature">
+                        <span class="feature-icon">✓</span>
+                        <span>Predicciones con inteligencia artificial</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Panel de formulario derecho -->
+        <div class="form-panel">
+            <div class="form-header">
+                <h2 class="form-title">Bienvenido</h2>
+                <p class="form-subtitle">Ingresa a tu cuenta o crea una nueva</p>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="form-tabs">
+                <button class="tab active" onclick="switchTab('login')">Iniciar Sesión</button>
+                <button class="tab" onclick="switchTab('register')">Registrarse</button>
+            </div>
+            
+            <div class="form-content" id="formContent">
+                <!-- Formulario de Login -->
+                <div class="login-form">
+                    <!-- Social Login -->
+                    <div class="social-buttons">
+                        <button class="btn-social">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#4285F4">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span style="margin-left: 8px;">Google</span>
+                        </button>
+                        <button class="btn-social">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            <span style="margin-left: 8px;">Facebook</span>
+                        </button>
+                    </div>
+                    
+                    <div class="divider">
+                        <span>o continúa con email</span>
+                    </div>
+                    
+                    <!-- Email y Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="email">Correo Electrónico</label>
+                        <input type="email" id="email" class="form-input" placeholder="ejemplo@gmail.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••">
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="#">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Mantenerme conectado</label>
+                    </div>
+                    
+                    <button class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+                
+                <!-- Formulario de Registro -->
+                <div class="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="reg-name">Nombre Completo</label>
+                        <input type="text" id="reg-name" class="form-input" placeholder="Juan Pérez">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="reg-email">Correo Electrónico</label>
+                        <input type="email" id="reg-email" class="form-input" placeholder="ejemplo@gmail.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="reg-phone">Teléfono (para alertas SMS)</label>
+                        <input type="tel" id="reg-phone" class="form-input" placeholder="+504 9999-9999">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="reg-password">Contraseña</label>
+                        <input type="password" id="reg-password" class="form-input" placeholder="Mínimo 8 caracteres">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="reg-confirm">Confirmar Contraseña</label>
+                        <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••">
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="terms">
+                        <label for="terms">Acepto los términos y condiciones</label>
+                    </div>
+                    
+                    <button class="btn btn-primary">Crear Cuenta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            const formContent = document.getElementById('formContent');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                formContent.classList.remove('register');
+            } else {
+                tabs[1].classList.add('active');
+                formContent.classList.add('register');
+            }
+        }
+    </script>
+</body>
+</html>
