@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMIPRO - Sistema de Monitoreo de Inundaciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .status {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .info-card {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        .info-card h3 {
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .info-card p {
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .footer {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            color: #999;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🌊</div>
+        <h1>CMIPRO</h1>
+        <div class="status">✅ Infraestructura Operativa</div>
+        <p>
+            <strong>Sistema de Monitoreo y Alerta Temprana de Inundaciones</strong><br>
+            Valle de Sula, Honduras
+        </p>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Estado</h3>
+                <p>En Desarrollo</p>
+            </div>
+            <div class="info-card">
+                <h3>Semana</h3>
+                <p>2 de 8</p>
+            </div>
+            <div class="info-card">
+                <h3>Progreso</h3>
+                <p>30%</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Lunes, Semana 2 - Infraestructura AWS con Terraform ✅</p>
+            <p>© 2025 CMIPRO - Adolfo Angel</p>
+        </div>
+    </div>
+</body>
+</html>
