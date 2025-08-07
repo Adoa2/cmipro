@@ -20,7 +20,7 @@ resource "aws_internet_gateway" "main" {
 
 # Elastic IPs para NAT Gateways
 resource "aws_eip" "nat" {
-  count  = var.environment == "prod" ? length(var.availability_zones) : 1
+  count  = var.environment == "prod" ? length(var.availability_zones) : 0
   domain = "vpc"
 
   tags = {
@@ -32,7 +32,7 @@ resource "aws_eip" "nat" {
 
 # NAT Gateways
 resource "aws_nat_gateway" "main" {
-  count = var.environment == "prod" ? length(var.availability_zones) : 1
+  count = var.environment == "prod" ? length(var.availability_zones) : 0
 
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
