@@ -51,3 +51,28 @@ output "internet_gateway_id" {
   value       = module.networking.internet_gateway_id
   description = "Internet Gateway ID"
 }
+
+# ============================================================================
+# OUTPUTS RDS POSTGRESQL - Martes Semana 2
+# ============================================================================
+
+output "rds_endpoint" {
+  description = "Endpoint de conexión a PostgreSQL"
+  value       = aws_db_instance.postgres.endpoint
+}
+
+output "rds_port" {
+  description = "Puerto de PostgreSQL"
+  value       = aws_db_instance.postgres.port
+}
+
+output "rds_database_name" {
+  description = "Nombre de la base de datos"
+  value       = aws_db_instance.postgres.db_name
+}
+
+output "psql_command" {
+  description = "Comando psql para conexión"
+  value       = "psql -h ${aws_db_instance.postgres.endpoint} -p ${aws_db_instance.postgres.port} -U ${aws_db_instance.postgres.username} -d ${aws_db_instance.postgres.db_name}"
+  sensitive   = true
+}

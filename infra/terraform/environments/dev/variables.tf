@@ -66,3 +66,42 @@ variable "alert_thresholds" {
     }
   }
 }
+# ============================================================================
+# VARIABLES RDS POSTGRESQL - Martes Semana 2
+# ============================================================================
+
+variable "rds_instance_class" {
+  description = "Clase de instancia RDS"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "rds_database_name" {
+  description = "Nombre de la base de datos principal"
+  type        = string
+  default     = "cmipro_dev"
+}
+
+variable "rds_allocated_storage" {
+  description = "Almacenamiento inicial en GB"
+  type        = number
+  default     = 20
+}
+
+variable "rds_max_allocated_storage" {
+  description = "Almacenamiento máximo para auto-scaling en GB"
+  type        = number
+  default     = 100
+}
+
+variable "rds_backup_retention_period" {
+  description = "Días de retención de backups"
+  type        = number
+  default     = 7
+}
+
+variable "rds_skip_final_snapshot" {
+  description = "Omitir snapshot final al eliminar"
+  type        = bool
+  default     = true
+}
