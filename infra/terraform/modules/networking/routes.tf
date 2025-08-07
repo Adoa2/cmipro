@@ -18,18 +18,18 @@ resource "aws_route_table" "private" {
   count  = length(var.availability_zones)
   vpc_id = aws_vpc.main.id
 
-  # Solo agregar ruta NAT si existe
-  dynamic "route" {
-    for_each = var.environment == "prod" ? [1] : []  # Solo en prod
-    content {
-      cidr_block     = "0.0.0.0/0"
-      nat_gateway_id = aws_nat_gateway.main[count.index % length(aws_nat_gateway.main)].id
-    }
+  # Ruta hacia NAT Gateway (corregida)
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = var.environment == "prod" ? aws_nat_gateway.main[count.index % length(aws_nat_gateway.main)].id : aws_nat_gateway.main[0].id
   }
 
   tags = {
     Name = "${var.project_name}-${var.environment}-private-rt-${count.index + 1}"
+    Type = "Private"
   }
+  
+  depends_on = [aws_nat_gateway.main]
 }
 
 # Route Table para Base de Datos (sin salida a Internet)
@@ -54,7 +54,7 @@ resource "aws_route_table_association" "private" {
   count = length(aws_subnet.private)
   
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[min(count.index, length(aws_route_table.private) - 1)].id
+  route_table_id = aws_route_table.private[count.index].id
 }
 
 resource "aws_route_table_association" "database" {

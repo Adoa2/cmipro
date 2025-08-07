@@ -105,3 +105,29 @@ variable "rds_skip_final_snapshot" {
   type        = bool
   default     = true
 }
+
+# Variables adicionales para Lambda Functions
+
+variable "lambda_timeout" {
+  description = "Timeout en segundos para Lambda functions"
+  type        = number
+  default     = 300
+}
+
+variable "lambda_memory_size" {
+  description = "Memoria en MB para Lambda functions"
+  type        = number
+  default     = 512
+}
+
+variable "noaa_polling_schedule" {
+  description = "Expresión de schedule para polling NOAA"
+  type        = string
+  default     = "rate(5 minutes)"
+}
+
+variable "log_retention_days" {
+  description = "Días de retención para CloudWatch Logs"
+  type        = number
+  default     = 7
+}

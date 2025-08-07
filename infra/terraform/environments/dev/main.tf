@@ -86,7 +86,7 @@ resource "aws_db_parameter_group" "postgres_params" {
   parameter {
     name         = "shared_preload_libraries"
     value        = "pg_stat_statements"
-    apply_method = "pending-reboot"  # Requiere reinicio
+    apply_method = "pending-reboot" # Requiere reinicio
   }
 
   tags = {
