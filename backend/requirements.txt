@@ -1,0 +1,18 @@
+# Archivo: backend/requirements_minimal.txt
+# Dependencias mínimas que NO requieren compilación
+
+# FastAPI básico
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# Variables de entorno
+python-dotenv==1.0.0
+
+# Validación básica
+pydantic==2.5.0
+
+# HTTP requests
+requests==2.31.0
+
+# PostgreSQL sin compilación (solo si funciona)
+# psycopg2-binary==2.9.9
